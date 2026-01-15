@@ -625,16 +625,7 @@ function CheckPlayerData(source, playerData)
     playerData.metadata.status = playerData.metadata.status or {}
     playerData.metadata.phone = playerData.metadata.phone or {}
     playerData.metadata.bloodtype = playerData.metadata.bloodtype or config.player.bloodTypes[math.random(1, #config.player.bloodTypes)]
-    playerData.metadata.dealerrep = playerData.metadata.dealerrep or 0
-    playerData.metadata.craftingrep = playerData.metadata.craftingrep or 0
-    playerData.metadata.attachmentcraftingrep = playerData.metadata.attachmentcraftingrep or 0
     playerData.metadata.currentapartment = playerData.metadata.currentapartment or nil
-    playerData.metadata.jobrep = playerData.metadata.jobrep or {}
-    playerData.metadata.jobrep.tow = playerData.metadata.jobrep.tow or 0
-    playerData.metadata.jobrep.trucker = playerData.metadata.jobrep.trucker or 0
-    playerData.metadata.jobrep.taxi = playerData.metadata.jobrep.taxi or 0
-    playerData.metadata.jobrep.hotdog = playerData.metadata.jobrep.hotdog or 0
-    playerData.metadata.callsign = playerData.metadata.callsign or 'NO CALLSIGN'
     playerData.metadata.fingerprint = playerData.metadata.fingerprint or GenerateUniqueIdentifier('FingerId')
     playerData.metadata.walletid = playerData.metadata.walletid or GenerateUniqueIdentifier('WalletId')
     playerData.metadata.criminalrecord = playerData.metadata.criminalrecord or {
@@ -657,6 +648,24 @@ function CheckPlayerData(source, playerData)
         SerialNumber = GenerateUniqueIdentifier('SerialNumber'),
         InstalledApps = {},
     }
+
+    -- for wounding state
+    playerData.metadata.wounding = playerData.metadata.wounding or {
+        ['HEAD'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['NECK'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['UPPER_BODY'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['LOWER_BODY'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['LARM'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['RARM'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['LHAND'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['RHAND'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['LLEG'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['RLEG'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['LFOOT'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['RFOOT'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['SPINE'] = { percent = 0, severity = false, broken = false, bleeding = false },
+    }
+    
     local jobs, gangs = storage.fetchPlayerGroups(playerData.citizenid)
 
     local job = GetJob(playerData.job?.name) or GetJob('unemployed')
