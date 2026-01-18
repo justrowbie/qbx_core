@@ -30,7 +30,7 @@ return {
             },
             AccountNumber = {
                 valueFunction = function()
-                    return 'US0' .. math.random(1, 9) .. 'QBX' .. math.random(1111, 9999) .. math.random(1111, 9999) .. math.random(11, 99)
+                    return 'APO' .. math.random(1, 9) .. 'IPS' .. math.random(1111, 9999) .. math.random(1111, 9999) .. math.random(11, 99)
                 end,
             },
             PhoneNumber = {
@@ -45,7 +45,7 @@ return {
             },
             WalletId = {
                 valueFunction = function()
-                    return 'QB-' .. math.random(11111111, 99999999)
+                    return 'WAL' .. math.random(11111111, 99999999)
                 end,
             },
             SerialNumber = {
@@ -61,9 +61,7 @@ return {
     ---@type [TableName, ColumnName][]
     characterDataTables = {
         {'properties', 'owner'},
-        {'bank_accounts_new', 'id'},
         {'playerskins', 'citizenid'},
-        {'player_mails', 'citizenid'},
         {'player_outfits', 'citizenid'},
         {'player_vehicles', 'citizenid'},
         {'player_groups', 'citizenid'},
