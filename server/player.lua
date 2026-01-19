@@ -651,19 +651,19 @@ function CheckPlayerData(source, playerData)
 
     -- for wounding state
     playerData.metadata.wounding = playerData.metadata.wounding or {
-        ['HEAD'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['NECK'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['UPPER_BODY'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['LOWER_BODY'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['LARM'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['RARM'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['LHAND'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['RHAND'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['LLEG'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['RLEG'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['LFOOT'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['RFOOT'] = { percent = 0, severity = false, broken = false, bleeding = false },
-        ['SPINE'] = { percent = 0, severity = false, broken = false, bleeding = false },
+        ['HEAD'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['NECK'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['UPPER_BODY'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['LOWER_BODY'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['LARM'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['RARM'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['LHAND'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['RHAND'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['LLEG'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['RLEG'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['LFOOT'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['RFOOT'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
+        ['SPINE'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
     }
     
     local jobs, gangs = storage.fetchPlayerGroups(playerData.citizenid)
