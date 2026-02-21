@@ -1,8 +1,8 @@
 return {
     statusIntervalSeconds = 5, -- how often to check hunger/thirst status to remove health if 0.
     loadingModelsTimeout = 30000, -- Waiting time for ox_lib to load the models before throws an error, for low specs pc
-
-    pauseMapText = 'APOCALIPS', -- Text shown above the map when ESC is pressed. If left empty 'FiveM' will appear
+    startingBlackout = true,
+    pauseMapText = 'Nothingville', -- Text shown above the map when ESC is pressed. If left empty 'FiveM' will appear
 
     characters = {
         useExternalCharacters = false, -- Whether you have an external character management resource. (If true, disables the character management inside the core)
@@ -21,8 +21,8 @@ return {
 
         locations = { -- Spawn locations for multichar, these are chosen randomly
             {
-                pedCoords = vec4(399.49, -1004.52, -99.0, 269.02),
-                camCoords = vec4(403.05, -1004.39, -99.0, 86.56),
+                pedCoords = vec4(398.92, -1004.48, -98.0, 268.6),
+                camCoords = vec4(401.88, -1004.37, -98.5, 88.85),
             },
         },
     },
@@ -55,6 +55,6 @@ return {
 
     --- Only used by QB bridge
     hasKeys = function(plate, vehicle)
-        return exports.qbx_vehiclekeys:HasKeys(vehicle)
+        return GetResourceState('qbx_vehiclekeys') ~= 'started' or exports.qbx_vehiclekeys:HasKeys(vehicle)
     end,
 }

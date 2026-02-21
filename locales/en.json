@@ -22,14 +22,16 @@
         "no_match_character_registration": "Anything other than letters aren't allowed, trailing whitespaces aren't allowed either and words must start with a capital letter in input fields. You can however add words with spaces inbetween.",
         "already_in_queue": "You are already in queue.",
         "no_subqueue": "You were not let in any sub-queue.",
-        "character_delete_failed": "Character deletion failed. Please try again."
+        "character_delete_failed": "Character deletion failed. Please try again.",
+        "not_optin": "You are not opted in for admin duty. (/optin to toggle)"
     },
     "success": {
         "server_opened": "The server has been opened",
         "server_closed": "The server has been closed",
         "teleported_waypoint": "Teleported To Waypoint.",
         "character_deleted": "Character deleted!",
-        "character_deleted_citizenid": "You successfully deleted the character with Citizen ID %s."
+        "character_deleted_citizenid": "You successfully deleted the character with Citizen ID %s.",
+        "optin_set": "You have successfully opted %s for admin duty."
     },
     "info": {
         "received_paycheck": "You received your paycheck of $%s",
@@ -42,7 +44,7 @@
         "checking_whitelisted": "Hello %s. We are checking your allowance.",
         "exploit_banned": "You have been banned for cheating. Check our Discord for more information: %s",
         "exploit_dropped": "You Have Been Kicked For Exploitation",
-        "multichar_title": "Qbox Multichar",
+        "multichar_title": "Character",
         "multichar_new_character": "New Character #%s",
         "char_male": "Male",
         "char_female": "Female",
@@ -62,7 +64,9 @@
         "birth_date": "Birth Date",
         "select_gender": "Select your gender...",
         "confirm_delete": "Are you sure you wish to delete this character?",
-        "in_queue": "🐌 You are %s/%s in queue. (%s) %s"
+        "in_queue": "🐌 You are %s/%s in queue. (%s) %s",
+        "fetching_user": "Fetching user...",
+        "creating_user": "Creating user..."
     },
     "command": {
         "tp": {
@@ -171,6 +175,7 @@
             "params": {
                 "message": { "name": "message", "help": "Message to send" }
             }
-        }
+        },
+        "optin": { "help": "Toggle opt-in for admin duty (Admin Only)" }
     }
 }

@@ -393,9 +393,11 @@ local function chooseCharacter()
     ShutdownLoadingScreenNui()
     setupPreviewCam()
 
-    --nt: set blackout false
-    SetArtificialLightsState(false)
-    SetArtificialLightsStateAffectsVehicles(false)
+    --nt: set blackout check Renewed-Weathersync config
+    if config.startingBlackout then
+        SetArtificialLightsState(false)
+        SetArtificialLightsStateAffectsVehicles(false)
+    end
 
     local options = {}
     for i = 1, amount do
@@ -510,10 +512,12 @@ RegisterNetEvent('qbx_core:client:spawnNoApartments', function() -- This event i
     TriggerServerEvent('qb-houses:server:SetInsideMeta', 0, false)
     TriggerServerEvent('qb-apartments:server:SetInsideMeta', 0, 0, false)
     TriggerEvent('qb-weathersync:client:EnableSync')
+
     --nt: check hud visibility from nt_hud
     if exports.nt_hud:GetHudVisibility() then
         TriggerEvent('nt_hud:client:toggleHud', false)
     end
+    
     TriggerEvent('qb-clothes:client:CreateFirstCharacter')
 end)
 

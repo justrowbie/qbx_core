@@ -158,6 +158,7 @@ local function toPlayerJob(jobName, job, grade)
         name = jobName,
         label = job.label,
         isboss = job.grades[grade].isboss or false,
+        bankAuth = job.grades[grade].bankAuth or false,
         onduty = job.defaultDuty or false,
         payment = job.grades[grade].payment or 0,
         type = job.type,
@@ -587,7 +588,6 @@ function CheckPlayerData(source, playerData)
     playerData.citizenid = playerData.citizenid or GenerateUniqueIdentifier('citizenid')
     playerData.cid = playerData.charinfo?.cid or playerData.cid or 1
     playerData.money = playerData.money or {}
-    playerData.optin = playerData.optin or true
     for moneytype, startamount in pairs(config.money.moneyTypes) do
         playerData.money[moneytype] = playerData.money[moneytype] or startamount
     end
@@ -605,6 +605,7 @@ function CheckPlayerData(source, playerData)
     playerData.charinfo.cid = playerData.charinfo.cid or playerData.cid
     -- Metadata
     playerData.metadata = playerData.metadata or {}
+    playerData.metadata.optin = playerData.metadata.optin and true or false
     playerData.metadata.health = playerData.metadata.health or 200
     playerData.metadata.hunger = playerData.metadata.hunger or 100
     playerData.metadata.thirst = playerData.metadata.thirst or 100
@@ -625,7 +626,16 @@ function CheckPlayerData(source, playerData)
     playerData.metadata.status = playerData.metadata.status or {}
     playerData.metadata.phone = playerData.metadata.phone or {}
     playerData.metadata.bloodtype = playerData.metadata.bloodtype or config.player.bloodTypes[math.random(1, #config.player.bloodTypes)]
+    playerData.metadata.dealerrep = playerData.metadata.dealerrep or 0
+    playerData.metadata.craftingrep = playerData.metadata.craftingrep or 0
+    playerData.metadata.attachmentcraftingrep = playerData.metadata.attachmentcraftingrep or 0
     playerData.metadata.currentapartment = playerData.metadata.currentapartment or nil
+    playerData.metadata.jobrep = playerData.metadata.jobrep or {}
+    playerData.metadata.jobrep.tow = playerData.metadata.jobrep.tow or 0
+    playerData.metadata.jobrep.trucker = playerData.metadata.jobrep.trucker or 0
+    playerData.metadata.jobrep.taxi = playerData.metadata.jobrep.taxi or 0
+    playerData.metadata.jobrep.hotdog = playerData.metadata.jobrep.hotdog or 0
+    playerData.metadata.callsign = playerData.metadata.callsign or 'NO CALLSIGN'
     playerData.metadata.fingerprint = playerData.metadata.fingerprint or GenerateUniqueIdentifier('FingerId')
     playerData.metadata.walletid = playerData.metadata.walletid or GenerateUniqueIdentifier('WalletId')
     playerData.metadata.criminalrecord = playerData.metadata.criminalrecord or {
@@ -648,24 +658,6 @@ function CheckPlayerData(source, playerData)
         SerialNumber = GenerateUniqueIdentifier('SerialNumber'),
         InstalledApps = {},
     }
-
-    -- for wounding state
-    playerData.metadata.wounding = playerData.metadata.wounding or {
-        ['HEAD'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['NECK'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['UPPER_BODY'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['LOWER_BODY'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['LARM'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['RARM'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['LHAND'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['RHAND'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['LLEG'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['RLEG'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['LFOOT'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['RFOOT'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-        ['SPINE'] = { percent = 0, bullets = 0, severity = false, broken = false, bleeding = false },
-    }
-    
     local jobs, gangs = storage.fetchPlayerGroups(playerData.citizenid)
 
     local job = GetJob(playerData.job?.name) or GetJob('unemployed')
@@ -813,7 +805,8 @@ function CreatePlayer(playerData, Offline)
 
         amount = tonumber(amount) --[[@as number]]
 
-        self.PlayerData.metadata[self.PlayerData.job.name].reputation += amount
+        local existingAmount = self.PlayerData.metadata.jobrep[self.PlayerData.job.name]
+        self.PlayerData.metadata.jobrep[self.PlayerData.job.name] = existingAmount + amount
 
         ---@diagnostic disable-next-line: param-type-mismatch
         UpdatePlayerData(self.Offline and self.PlayerData.citizenid or self.PlayerData.source)
@@ -1285,7 +1278,9 @@ function AddMoney(identifier, moneyType, amount, reason)
 
     player.PlayerData.money[moneyType] += amount
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
         UpdatePlayerData(identifier)
 
         local tags = amount > 100000 and config.logging.role or nil
@@ -1340,7 +1335,9 @@ function RemoveMoney(identifier, moneyType, amount, reason)
 
     player.PlayerData.money[moneyType] -= amount
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
         UpdatePlayerData(identifier)
 
         local tags = amount > 100000 and config.logging.role or nil
@@ -1388,7 +1385,9 @@ function SetMoney(identifier, moneyType, amount, reason)
 
     player.PlayerData.money[moneyType] = amount
 
-    if not player.Offline then
+    if player.Offline then
+        SaveOffline(player.PlayerData)
+    else
         UpdatePlayerData(identifier)
 
         local difference = amount - oldAmount
