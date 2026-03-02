@@ -1,3 +1,22 @@
+
+-- FIX: safe model loader (prevents invalid model crash)
+local function safeRequestModel(model)
+    if type(model) == 'string' then
+        model = joaat(model)
+    end
+
+    if type(model) ~= 'number' then
+        model = joaat('mp_m_freemode_01')
+    end
+
+    if not IsModelInCdimage(model) or not IsModelValid(model) then
+        model = joaat('mp_m_freemode_01')
+    end
+
+    model = safeRequestModel(model)
+    return model
+end
+
 local config = require 'config.client'
 local defaultSpawn = require 'config.shared'.defaultSpawn
 
@@ -367,8 +386,10 @@ local function chooseCharacter()
     DisplayRadar(false)
 
     --nt: check hud visibility from nt_hud
-    if exports.nt_hud:GetHudVisibility() then
-        TriggerEvent('nt_hud:client:toggleHud', false)
+    if GetResourceState('nt_hud'):find('start') then
+        if exports.nt_hud:GetHudVisibility() then
+            TriggerEvent('nt_hud:client:toggleHud', false)
+        end
     end
 
     DoScreenFadeOut(500)
@@ -451,8 +472,12 @@ local function chooseCharacter()
                             if GetResourceState('qbx_apartments'):find('start') then
                                 TriggerEvent('apartments:client:setupSpawnUI', character.citizenid)
                             elseif GetResourceState('qbx_spawn'):find('start') then
-                                TriggerEvent('qb-spawn:client:setupSpawns', character.citizenid)
-                                TriggerEvent('qb-spawn:client:openUI', true)
+                                if config.randomSpawn then
+                                    TriggerEvent('qb-spawn:client:setupSpawns')
+                                else
+                                    TriggerEvent('qb-spawn:client:setupSpawns', character.citizenid)
+                                    TriggerEvent('qb-spawn:client:openUI', true)
+                                end
                             else
                                 spawnLastLocation()
                             end
@@ -514,8 +539,10 @@ RegisterNetEvent('qbx_core:client:spawnNoApartments', function() -- This event i
     TriggerEvent('qb-weathersync:client:EnableSync')
 
     --nt: check hud visibility from nt_hud
-    if exports.nt_hud:GetHudVisibility() then
-        TriggerEvent('nt_hud:client:toggleHud', false)
+    if GetResourceState('nt_hud'):find('start') then
+        if exports.nt_hud:GetHudVisibility() then
+            TriggerEvent('nt_hud:client:toggleHud', false)
+        end
     end
     
     TriggerEvent('qb-clothes:client:CreateFirstCharacter')

@@ -60,7 +60,12 @@ lib.callback.register('qbx_core:server:createCharacter', function(source, data)
     local success = Login(source, nil, newData)
     if not success then return end
 
-    giveStarterItems(source)
+    --nt: starterpack move in to nt_smallresources
+    if GetResourceState('nt_smallresources'):find('start') then
+        exports.nt_smallresources:GiveStarterPack()
+    else
+        giveStarterItems(source)
+    end
 
     lib.print.info(('%s has created a character'):format(GetPlayerName(source)))
     return newData
